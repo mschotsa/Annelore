@@ -55,7 +55,7 @@
                 <ol class="breadcrumb">
                     <li><a href="index.html">Home</a>
                     </li>
-                    <li class="active">Contact</li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ol>
             </div>
         </div>
@@ -67,23 +67,60 @@
             <div class="col-md-8">
                 
             <!-- Contact Details Column -->
-            <div class="col-md-4">
-                <h3>Contact Details</h3>
+            <div class="col-md-6">
+                <h3>Payment through Paypal</h3>
                 <p>
-                    Annelore Ottoy <br> 170 East 90th Street <br> New York, NY 10128<br>
-                </p>
-                <p><i class="fa fa-phone"></i> 
-                    <abbr title="Phone">P</abbr>: +1 (646) 406 2162</p>
-                <p><i class="fa fa-envelope-o"></i> 
-                    <abbr title="Email">E</abbr>: <a href="mailto:Annelore_Ottoy@hotmail.com">Annelore.Ottoy@gmail.com</a>
-                </p>
-                <ul class="list-unstyled list-inline list-social-icons">
-                    <li>
-                        <a href="https://www.linkedin.com/in/michaelschotsaert/"><i class="fa fa-linkedin-square fa-2x"></i></a>
-                    </li>
-                    
-                    
-                </ul>
+                    Payments are processed through Paypal <br>
+               </p>
+<!-- PAYPAL CODE-->
+<div id="smart-button-container">
+      <div style="text-align: center;">
+        <div id="paypal-button-container"></div>
+      </div>
+    </div>
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+  <script>
+    function initPayPalButton() {
+      paypal.Buttons({
+        style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'pay',
+          
+        },
+
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{"description":"payment for 1 consultation","amount":{"currency_code":"USD","value":55}}]
+          });
+        },
+
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(orderData) {
+            
+            // Full available details
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+            // Show a success message within this page, e.g.
+            const element = document.getElementById('paypal-button-container');
+            element.innerHTML = '';
+            element.innerHTML = '<h3>Thank you for your payment!</h3>';
+
+            // Or go to another URL:  actions.redirect('thank_you.html');
+            
+          });
+        },
+
+        onError: function(err) {
+          console.log(err);
+        }
+      }).render('#paypal-button-container');
+    }
+    initPayPalButton();
+  </script>
+
+
             </div>
         </div>
         <!-- /.row -->
